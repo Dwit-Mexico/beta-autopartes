@@ -10,14 +10,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 
 const MetodoP = () => {
     const [paymentMethod, setPaymentMethod] = useState("efectivo");
 
     return (
-        <div className="flex flex-col space-y-4 w-full max-w-2xl mx-auto p-4 md:p-8">
+        <div className="flex flex-col space-y-4 w-full max-w-2xl mx-auto">
             <Select onValueChange={setPaymentMethod} defaultValue="efectivo">
                 <SelectTrigger className="w-full md:h-12">
                     <SelectValue placeholder="Selecciona tu método de pago" />

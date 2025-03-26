@@ -9,8 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import FiltroCatalogo from "@/components/filtrocat";
 import { toast } from "sonner"
 import Equivalencias from "@/components/Equivalencias";
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import {
     Pagination,
     PaginationContent,
@@ -43,7 +41,7 @@ function Catalogo() {
     const [mostrarSoloFavoritos, setMostrarSoloFavoritos] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     
-// Load favorites from localStorage on component mount
+// Cargar favoritos desde localStorage al montar el componente
 useEffect(() => {
     const storedFavorites = localStorage.getItem("favoritos");
     if (storedFavorites) {
@@ -75,7 +73,7 @@ useEffect(() => {
     useEffect(() => {
         if (!query) return;
 
-        setIsLoading(true); // Start loading
+        setIsLoading(true);
         fetch(`https://test-api.beta-autopartes.com/api/v1/products/search/0?query=${encodeURIComponent(query)}`)
             .then((res) => res.json())
             .then((data) => setProductos(data))
@@ -109,8 +107,6 @@ useEffect(() => {
         return pages;
     };
 
-
-    // Handle quantity change
     const handleQuantityChange = (productId, value) => {
         setQuantityInputs(prev => ({
             ...prev,
@@ -120,8 +116,7 @@ useEffect(() => {
 
     //funcion para agregar a favoritos
     const addToFavorite = (producto) => {
-        // Obtener favoritos de localStorage y asegurarse de que sea un array
-    let favo = localStorage.getItem("favoritos");
+        let favo = localStorage.getItem("favoritos");
 
     try {
         favo = favo ? JSON.parse(favo) : [];
@@ -130,19 +125,18 @@ useEffect(() => {
         favo = []; // Si hay un error, inicializar como array vacío
     }
 
-    // Asegurar que favo sea un array
     if (!Array.isArray(favo)) {
         favo = [];
     }
 
-    // Buscar si el producto ya está en favoritos
     const existe = favo.some(item => item.id_producto === producto.id_producto);
 
     if (existe) {
-        // Si existe, eliminarlo
+        // elimina favoritos si ya existe
         favo = favo.filter(item => item.id_producto !== producto.id_producto);
         console.log("Producto eliminado de favoritos:", producto.id_producto);
     } else {
+
         // Si no existe, agregarlo
         favo.push({
             id_producto: producto.id_producto,
@@ -156,7 +150,6 @@ useEffect(() => {
         console.log("Producto agregado a favoritos:", producto.id_producto);
     }
 
-    // Guardar la nueva lista en localStorage
     localStorage.setItem("favoritos", JSON.stringify(favo));
 
     // Mostrar en consola para depuración
@@ -167,8 +160,6 @@ useEffect(() => {
     const addToCart = (producto) => {
         const cart = JSON.parse((localStorage.getItem("cart") as string) || "[]");
 
-
-        
         const quantity = quantityInputs[producto.id_producto] || 1;
     
         // Verifica si el producto ya está en el carrito
@@ -234,17 +225,16 @@ useEffect(() => {
             cantidad: quantity
         }]));
     
-        // Redirigir a la página de pago
+        
         router.push('/pago');
     };
-    // In your catalog page component
+   
 useEffect(() => {
   const handleFavoritosToggle = (event) => {
     const { mostrarSoloFavoritos } = event.detail;
     setMostrarSoloFavoritos(mostrarSoloFavoritos);
   };
 
-  // Only add event listeners in the browser environment
   if (typeof window !== 'undefined') {
     window.addEventListener('toggleLike', handleFavoritosToggle);
     
@@ -295,33 +285,32 @@ useEffect(() => {
                                                     </h2>
                                                 </div>
                                                 <button 
-    className={`ml-2 ${likedButtons[producto.id_producto] ? "text-red-500" : "text-gray-400"} hover:text-red-500`}
-    onClick={() => {
-        // Add to favorites
-        addToFavorite(producto);
+                                                    className={`ml-2 ${likedButtons[producto.id_producto] ? "text-red-500" : "text-gray-400"} hover:text-red-500`}
+                                                    onClick={() => {
+                                                        // Añadir a favoritos
+                                                        addToFavorite(producto);
 
-        // Update the likedButtons state to reflect the change
-        setLikedButtons(prev => ({
-            ...prev,
-            [producto.id_producto]: !prev[producto.id_producto]
-        }));
+                                                        setLikedButtons(prev => ({
+                                                            ...prev,
+                                                            [producto.id_producto]: !prev[producto.id_producto]
+                                                        }));
 
-        // Show toast notification with Undo action
-        toast(likedButtons[producto.id_producto] ? 
-            "Se ha eliminado el producto de favoritos." : 
-            "Se ha agregado el producto a favoritos.", {
-            description: likedButtons[producto.id_producto] ? 
-                "Producto eliminado de favoritos." : 
-                "Producto agregado a favoritos.",
-            action: {
-                label: "Ir a favoritos",
-                onClick: () => router.push('/favoritos'),
-            },
-        });
-    }}
->
-    <Heart size={18} />
-</button>
+                                                        // Mostrar notificación con la acción Deshacer
+                                                        toast(likedButtons[producto.id_producto] ? 
+                                                            "Se ha eliminado el producto de favoritos." : 
+                                                            "Se ha agregado el producto a favoritos.", {
+                                                            description: likedButtons[producto.id_producto] ? 
+                                                                "Producto eliminado de favoritos." : 
+                                                            "Producto agregado a favoritos.",
+                                                            action: {
+                                                                label: "Ir a favoritos",
+                                                                onClick: () => router.push('/favoritos'),
+                                                            },
+                                                        });
+                                                    }}
+                                                >
+                                                    <Heart size={18} />
+                                                </button>
                                             </div>
                                         </div>
 
@@ -354,13 +343,13 @@ useEffect(() => {
                                             </div>
                                         </div>
                                         <div className="px-3 pb-2 flex items-center justify-between">
-    <p className="text-sm text-gray-600 dark:text-white whitespace-nowrap">
-        SKU: {producto.clave}
-    </p>
-    <p className="text-sm text-gray-600 dark:text-white truncate max-w-[150px] text-right">
-        Marca: {producto.marca}
-    </p>
-</div>
+                                            <p className="text-sm text-gray-600 dark:text-white whitespace-nowrap">
+                                                SKU: {producto.clave}
+                                            </p>
+                                            <p className="text-sm text-gray-600 dark:text-white truncate max-w-[150px] text-right">
+                                            Marca: {producto.marca}
+                                            </p>
+                                        </div>
                                         <div className="px-3 pb-2 flex items-center">
                                             <p className="text-sm mr-2">Cantidades</p>
                                             <input

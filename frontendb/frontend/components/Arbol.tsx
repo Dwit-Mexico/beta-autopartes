@@ -102,7 +102,6 @@ export default function Arbol() {
       return (
         <div className="border border-gray-200 rounded-lg shadow-sm p-4 dark:bg-slate-900">
           <div className="flex gap-4 items-center">
-            {/* Image Section - more compact */}
             <div className="w-1/4">
               <div className="h-15 bg-gray-100 rounded flex items-center justify-center">
                 {product.imagen ? (
@@ -116,8 +115,7 @@ export default function Arbol() {
                 )}
               </div>
             </div>
-  
-            {/* Content Section - more compact */}
+            
             <div className="w-3/4 flex justify-between items-center">
               <div className="flex-1">
                 <h3 className="text-sm font-bold text-gray-800 dark:text-white line-clamp-2 mb-1">

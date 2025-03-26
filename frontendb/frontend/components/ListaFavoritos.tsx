@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const favoritos = () => {
   const [favoritos, setFavoritos] = useState<Producto[]>([]);
-  favoritos.map((producto) => console.log(producto.nombre)); // ✅ Funciona
+  favoritos.map((producto) => console.log(producto.nombre));
 }
 useEffect(() => {
   const carritoGuardado = localStorage.getItem("carrito") ?? "[]";

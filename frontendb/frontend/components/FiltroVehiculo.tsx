@@ -20,7 +20,7 @@ const ProductSearch = () => {
     const query = encodeURIComponent(filtros);
     const url = `https://test-api.beta-autopartes.com/api/v1/products/search/0?query=${query}`;
   
-    console.log("🔍 URL de búsqueda:", url); // Verifica la URL en la consola
+    console.log("🔍 URL de búsqueda:", url); 
 
      // Redirigir a la página de catálogo con los filtros en la URL
      router.push(`/catalogo?query=${encodeURIComponent(filtros)}`);

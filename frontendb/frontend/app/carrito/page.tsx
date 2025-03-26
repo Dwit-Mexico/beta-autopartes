@@ -127,7 +127,6 @@ export default function Carrito() {
             localStorage.setItem("checkoutProducts", JSON.stringify(checkoutProducts));
         }
         
-        // Redirección a la página de pago
         window.location.href = "/pago";
     };
 
@@ -152,12 +151,10 @@ export default function Carrito() {
         }
     ];
 
-    // Calcular precios
     const subtotal = cart.reduce((sum, producto) => sum + (producto.precio_dto || producto.precio_pp) * (producto.cantidad || 1), 0);
     const iva = subtotal * 0.16;
     const total = subtotal + iva;
     
-    // Verificar si el carrito está vacío
     const carritoVacio = cart.length === 0;
 
     // Vista de tabla (diseño original) para pantallas grandes

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import mysql.connector
 from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template, session
-import requests  # Only if not used elsewhere
+import requests 
 
 
 app = Flask(__name__)
@@ -128,13 +128,13 @@ def obtener_respuesta(pregunta):
     """Determina si la pregunta es sobre un producto o una duda general."""
     pregunta = limpiar_texto(pregunta)
 
-    # First priority: Check if it's a SKU query or direct SKU
+    # Primera prioridad: comprobar si se trata de una consulta de SKU o de un SKU directo
     if 'sku' in pregunta.lower() or re.match(r'^[A-Z0-9]{8}$', pregunta.upper()):
         resultado = buscar_producto(pregunta)
         print("Resultado búsqueda SKU:", resultado)
         return resultado
     
-    # Second priority: Check if it's about specific product stock or info
+    # Segunda prioridad: Verificar si se trata de stock o información de un producto específico
     if any(palabra in pregunta.lower() for palabra in [
         'busco', 'tienes', 'hay', 'necesito', 'quiero', 'precio', 
         'stock', 'modelo', 'marca', 'producto', 'parte', 'pieza', 'partes'  # Añadido 'partes'
@@ -154,19 +154,18 @@ def obtener_respuesta(pregunta):
             return obtener_respuesta_ia(pregunta)
         return resultado
     
-    # Third priority: Check promotions
+    # Tercera prioridad: Consultar promociones
     if any(palabra in pregunta.lower() for palabra in ['promocion', 'descuento', 'oferta']):
         try:
             return buscar_promociones()
         except:
             return obtener_respuesta_ia(pregunta)
     
-    # Last resort: Use AI for general questions
+    # Último recurso: utilizar IA para preguntas generales
     return obtener_respuesta_ia(pregunta)
 
-# ==============================
-# 🔹 FUNCIONES DE CONSULTA A LA IA
-# ==============================
+# Función para consultar a la IA
+
 def consultar_ia(pregunta):
     """Consulta a la IA (Gemini) para responder dudas generales."""
     try:
@@ -227,16 +226,16 @@ def chat():
             
             return jsonify({"response": respuesta_ai.text.strip()})
 
-        # POST handling with error wrapping
+        # Manejo de POST con envoltura de errores
         user_message = request.json.get("message")
         if not user_message:
             return jsonify({"error": "Mensaje vacío"}), 400
 
-        # Ensure session exists
+        # Asegurarse de que la sesión exista
         if "historial" not in session:
             session["historial"] = [MENSAJE_PERSONALIDAD]
 
-        # Process message with error handling
+        # Mensaje de proceso con manejo de errores
         try:
             respuesta = obtener_respuesta(user_message)
             session["historial"].append(f"Bot: {respuesta}")
@@ -266,6 +265,9 @@ def chatbot():
     respuesta = obtener_respuesta(pregunta)  # Función que ya tienes
 
     return jsonify({"respuesta": respuesta})
+
+
+#back que obtiene productos para el arbol
 
 @app.route("/api/products", methods=["GET"])
 def get_products_hierarchy():

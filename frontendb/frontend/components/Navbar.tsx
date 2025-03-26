@@ -8,9 +8,11 @@ import Config from "@/components/config";
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Sheet, SheetTrigger, SheetContent, SheetClose } from '@/components/ui/sheet';
+import { useTheme } from 'next-themes';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme } = useTheme();
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-sky-100 dark:bg-sky-900 py-3 px-5" suppressHydrationWarning>
@@ -19,7 +21,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <Link href={"/"}>
             <Image 
-              src="/images/logo.png" 
+              src={theme === 'dark' ? "/images/logo2.png" : "/images/logo.png"}
               alt="Logo" 
               width={180} 
               height={100} 

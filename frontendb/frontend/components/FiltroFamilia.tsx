@@ -31,7 +31,6 @@ const FiltroFamilia = () => {
                 <option>Fabricante</option>
                 <option>Seleccionar</option>
             </select>
-            {/* Repeat same responsive classes for other selects */}
             <select className="border p-2 rounded dark:bg-slate-900 w-full md:w-auto mb-2 md:mb-0">
                 <option>Marca</option>
                 <option>Seleccionar</option>

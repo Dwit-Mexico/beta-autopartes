@@ -17,11 +17,9 @@ export default function favoritos() {
     const [itemsPerPage] = useState(12);
     
     useEffect(() => {
-        // Load favorites from localStorage
         const storedFavorites = JSON.parse(localStorage.getItem("favoritos") || "[]");
         setFavoritos(storedFavorites);
         
-        // Initialize liked buttons state
         const initialLikedState = {};
         storedFavorites.forEach(item => {
             initialLikedState[item.id_producto] = true;
@@ -29,7 +27,6 @@ export default function favoritos() {
         setLikedButtons(initialLikedState);
     }, []);
 
-    // Handle quantity change
     const handleQuantityChange = (productId, value) => {
         setQuantityInputs(prev => ({
             ...prev,
@@ -37,34 +34,30 @@ export default function favoritos() {
         }));
     };
 
-    // Function to remove from favorites
+    // eliminar favoritos
     const removeFromFavorite = (producto) => {
-        // Filter out the product to remove
         const updatedFavorites = favoritos.filter(item => item.id_producto !== producto.id_producto);
-        
-        // Update state
+    
         setFavoritos(updatedFavorites);
         
-        // Update localStorage
+        // actualiza localStorage
         localStorage.setItem("favoritos", JSON.stringify(updatedFavorites));
         
-        // Update liked buttons state
         setLikedButtons(prev => ({
             ...prev,
             [producto.id_producto]: false
         }));
     };
-
-    // Add to cart function
+    
     const addToCart = (producto) => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
         const quantity = quantityInputs[producto.id_producto] || 1;
         
-        // Check if product already in cart
+       
         const existingProductIndex = cart.findIndex((item) => item.id_producto === producto.id_producto);
         
         if (existingProductIndex === -1) {
-            // New product, add to cart
+           
             cart.push({
                 id_producto: producto.id_producto,
                 descripcion: producto.descripcion,
@@ -76,14 +69,14 @@ export default function favoritos() {
                 cantidad: quantity
             });
         } else {
-            // Existing product, update quantity
+            
             cart[existingProductIndex].cantidad = quantity;
         }
         
         localStorage.setItem("cart", JSON.stringify(cart));
     };
 
-    // Direct buy function
+
     const handleDirectBuy = (producto) => {
         addToCart(producto);
         router.push('/pago');
@@ -135,7 +128,6 @@ export default function favoritos() {
                                         </div>
                                     </div>
 
-                                    {/* Imagen */}
                                     <div className="px-3">
                                         <img
                                             src={producto.imagen}

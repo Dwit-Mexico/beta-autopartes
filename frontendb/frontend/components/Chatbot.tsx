@@ -14,14 +14,6 @@ const Chatbot = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Guardar posición del scroll al cerrar
-  const handleClose = () => {
-    if (chatContainerRef.current) {
-      setScrollPosition(chatContainerRef.current.scrollTop);
-    }
-    setIsOpen(false);
-  };
-
   // Restaurar posición del scroll al abrir
   useEffect(() => {
     if (isOpen && chatContainerRef.current) {
@@ -51,7 +43,7 @@ const Chatbot = () => {
     setUserMessage("");  // Limpiar el campo de entrada
 
     try {
-      // Enviar el mensaje al backend (asegúrate de que la URL sea la correcta)
+      // Enviar el mensaje al backend
       const response = await fetch("http://localhost:5000/chat", {
         method: "POST",
         headers: {
@@ -60,13 +52,11 @@ const Chatbot = () => {
         body: JSON.stringify({ message: userMessage }),
       });
 
-      // Check for HTTP errors first
       if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Error desconocido');
       }
-
-      // Verify content type
+      
       const contentType = response.headers.get('content-type');
       if (!contentType?.includes('application/json')) {
           throw new TypeError('Respuesta no es JSON');

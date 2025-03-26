@@ -45,7 +45,7 @@ export default function Pago() {
     <>
       {/* Main container */}
       <div className="container mx-auto p-4 flex flex-col md:flex-row gap-4 md:gap-8 py-8">
-        {/* Payment Method Section */}
+        {/* seccion de metodo de pago */}
         <div className="flex-1 border p-4 md:p-6 rounded-lg">
           <h3 className="text-xl md:text-2xl font-semibold mb-4">Comprar</h3>
           <Label className="w-full z-50 flex justify-center space-x-2 bg-sky-100 dark:bg-sky-900 py-3">
@@ -82,7 +82,7 @@ export default function Pago() {
           </div>
         </div>
 
-        {/* Order Summary Section */}
+        {/* Sección de resumen del pedido*/}
         <div className="flex-1 border p-4 md:p-6 rounded-lg">
           <Label className="w-full flex justify-center space-x-2 bg-sky-100 dark:bg-sky-900 py-3 text-sm md:text-base">
             Tu pedido {selectedProducts.length > 0 ? `(${selectedProducts.length} productos)` : ''}
@@ -118,7 +118,7 @@ export default function Pago() {
               )}
             </ScrollArea>
 
-            {/* Total Section */}
+            {/* sección de costo total */}
             <div className="px-2 md:px-4 space-y-3">
               <div className="text-sm md:text-base space-y-2">
                 <div className="flex justify-between">
